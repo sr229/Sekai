@@ -11,6 +11,7 @@ const config = require('./test.json');
 const handler = new Tsuiga(config.token || process.env.DBL_TOKEN, config.clientID || process.env.DISCORD_APP_SNOWFLAKE);
 
 // send a test payload
+
 try {
     handler.postStats(3,1);
 } catch (e) {
