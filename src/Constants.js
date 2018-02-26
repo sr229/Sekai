@@ -2,7 +2,7 @@ const BASE_URL = 'https://discordbots.org/api';
 const ENDPOINTS = {
     bots: {
         base: '/bots',
-        users: '/users/:id',
+        bots: '/bots/:id',
         votes: '/bots/:id/votes',
         stats: '/bots/:id/stats'
     },
