@@ -62,8 +62,8 @@ class Tsuiga {
     postStats(guildCount, shardCount=0) {
         return new Promise((resolve, reject) => {
             if (!this.clientID) return reject(new TypeError('clientID has not been specified.'));
-            if (isNaN(guildCount)) return reject(new TypeError('guildCount is not a string.'));
-            if (isNaN(shardCount)) return reject(new TypeError('shardCount is not a string.'));
+            if (isNaN(guildCount)) return reject(new TypeError('guildCount is not a number.'));
+            if (isNaN(shardCount)) return reject(new TypeError('shardCount is not a number.'));
 
             resolve(request('POST', Constants.BASE_URL + Constants.ENDPOINTS.bots.stats.replace(':id', this.clientID), {
                 headers: {
@@ -74,6 +74,22 @@ class Tsuiga {
                 server_count: guildCount,
                 shard_count: shardCount
             })));
+        });
+    }
+    /**
+     * Gets a user with Snowflake specified
+     * @param {String} id the snowflake ID of the target user.
+     **/
+    getUser(id) {
+        return new Promise((resolve, reject) => {
+            if (!id && typeof id !== 'string') return new TypeError('id is not a valid string');
+            
+            resolve(request('GET', Constants.BASE_URL + Constants.ENDPOINTS.users.replace(':id', id), {
+                headers: {
+                    Authorization: this.key,
+                    'Constent-Type': 'application/json'
+                }
+            }));
         });
     }
 }
