@@ -23,3 +23,7 @@ const handler = new Tsuiga('TOKEN_HERE', 'BOT_ID_HERE');
 
 handler.getUser('USER_ID');
 ```
+
+## Documentation
+
+Coming soon to a local Tonkku near you.
