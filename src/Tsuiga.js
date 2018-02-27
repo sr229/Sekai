@@ -131,7 +131,7 @@ class Tsuiga {
             if (options.hasOwnProperty('onlyIDs') && typeof options.onlyIDs !== 'boolean') return reject(new TypeError('options.onlyIDs is not a boolean.'));
             if (options.hasOwnProperty('days')) {
                 if (isNaN(options.days)) return reject(new TypeError('options.days is not a number.'));
-                if (!(0 <= options.days <= 31)) return reject(new Error(`options.days must be within the range of 0 to 31, inclusive. Got ${options.days}`));
+                if (!(0 <= options.days <= 31)) return reject(new Error(`options.days must not be less than 0 or greater than 31. Got ${options.days}`));
             }
 
             let url = Constants.BASE_URL + Constants.ENDPOINTS.bots.votes.replace(':id', id);
@@ -161,6 +161,44 @@ class Tsuiga {
             let url = Constants.BASE_URL + Constants.ENDPOINTS.bots.stats.replace(':id', id);
 
             resolve(request('GET', url, {
+                headers: {Authorization: this.key}
+            }));
+        });
+    }
+
+    /**
+     * Searches DBL for bots matching various criteria.
+     * 
+     * @param {Object} [options] Options to search with.
+     * @returns {Promise<Bots[]>} List of bots that matched the search criteria.
+     */
+    searchBots(options={}) {
+        return new Promise((resolve, reject) => {
+            if (options.hasOwnProperty('limit')) {
+                if (isNaN(options.limit)) return reject(new TypeError('options.limit is not a number.'));
+                if (0 < options.limit <= 500) return reject(new Error(`options.limit must not be less than 0 or larger than 500. Got: ${options.limit}`));
+            }
+
+            if (options.hasOwnProperty('offset')) {
+                if (isNaN(options.offset)) return reject(new TypeError('options.offset is not a number.'));
+                if (options.offset < 0) return reject(new Error(`options.offset must not be less than 0. Got: ${options.offset}`));
+            }
+
+            if (options.hasOwnProperty('sort') && typeof options.sort !== 'string') return reject(new TypeError('options.sort is not a string.'));
+            if (options.hasOwnProperty('fields') && !Array.isArray(options.fields)) return reject(new TypeError('options.fields is not an array.'));
+
+            let url = Constants.BASE_URL + Constants.ENDPOINTS.bots.base;
+            let qs = {};
+
+            if (options.hasOwnProperty('limit')) qs.limit = Number(options.limit);
+            if (options.hasOwnProperty('offset')) qs.offset = Number(options.offset);
+            if (options.hasOwnProperty('sort')) qs.sort = options.sort;
+            if (options.hasOwnProperty('fields')) qs.fields = options.fields.join(',');
+            if (options.hasOwnProperty('search')) qs.search = Object.entries(options.search).map(([k, v]) => `${k}: ${v}`).join(' ');
+
+            qs = '?' + querystring.stringify(qs);
+
+            resolve(request('GET', url + qs, {
                 headers: {Authorization: this.key}
             }));
         });
