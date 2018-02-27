@@ -1,3 +1,5 @@
+import { constants } from 'os';
+
 /**
  * @file Tsuiga main class.
  * @copyright 2018 Ayana "Capuccino" Satomi
@@ -76,18 +78,40 @@ class Tsuiga {
             })));
         });
     }
+
     /**
-     * Gets a user with Snowflake specified
-     * @param {String} id the snowflake ID of the target user.
+     * Gets information for a particular user.
+     * 
+     * @param {String} id ID of the target user to get info for.
+     * @returns {Promise<User>} Information of the user.
      **/
     getUser(id) {
         return new Promise((resolve, reject) => {
-            if (!id && typeof id !== 'string') return new TypeError('id is not a valid string');
+            if (!id && typeof id !== 'string') return reject(new TypeError('id is not a string.'));
             
             resolve(request('GET', Constants.BASE_URL + Constants.ENDPOINTS.users.replace(':id', id), {
                 headers: {
                     Authorization: this.key,
-                    'Constent-Type': 'application/json'
+                    'Content-Type': 'application/json'
+                }
+            }));
+        });
+    }
+
+    /**
+     * Get information for a particular bot.
+     * 
+     * @param {String} id ID of the bot to get info for.
+     * @returns {Promise<Bot>} Information of the bot.
+     */
+    getBot(id) {
+        return new Promise((resolve, reject) => {
+            if (typeof id !== 'string') return reject(new TypeError('id is not a string.'));
+
+            resolve(request('GET', Constants.BASE_URL + Constants.ENDPOINTS.bots.single.replace(':id', id), {
+                headers: {
+                    Authorization: this.key,
+                    'Content-Type': 'application/json'
                 }
             }));
         });
