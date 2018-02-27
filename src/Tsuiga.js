@@ -201,7 +201,7 @@ class Tsuiga {
             resolve(request('GET', url + qs, {
                 headers: {Authorization: this.key}
             }));
-        });
+        }).then(res => res.results);
     }
 }
 
