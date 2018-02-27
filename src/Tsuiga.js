@@ -1,5 +1,3 @@
-import { constants } from 'os';
-
 /**
  * @file Tsuiga main class.
  * @copyright 2018 Ayana "Capuccino" Satomi
@@ -8,6 +6,7 @@ import { constants } from 'os';
 
 const https = require('https');
 const URL = require('url');
+const querystring = require('querystring');
 const Constants = require('./Constants');
 
 function request(method, url, options, payload) {
@@ -26,9 +25,9 @@ function request(method, url, options, payload) {
                 }
             });
         });
-        
+
         req.on('error', reject);
-        req.write(payload);
+        if (payload) req.write(payload);
         req.end();
     });
 }
@@ -67,14 +66,16 @@ class Tsuiga {
             if (isNaN(guildCount)) return reject(new TypeError('guildCount is not a number.'));
             if (isNaN(shardCount)) return reject(new TypeError('shardCount is not a number.'));
 
-            resolve(request('POST', Constants.BASE_URL + Constants.ENDPOINTS.bots.stats.replace(':id', this.clientID), {
+            let url = Constants.BASE_URL + Constants.ENDPOINTS.bots.stats.replace(':id', this.clientID);
+
+            resolve(request('POST', url, {
                 headers: {
                     Authorization: this.key,
                     'Content-Type': 'application/json'
                 }
             }, JSON.stringify({
-                server_count: guildCount,
-                shard_count: shardCount
+                server_count: Number(guildCount),
+                shard_count: Number(shardCount)
             })));
         });
     }
@@ -89,11 +90,10 @@ class Tsuiga {
         return new Promise((resolve, reject) => {
             if (!id && typeof id !== 'string') return reject(new TypeError('id is not a string.'));
             
-            resolve(request('GET', Constants.BASE_URL + Constants.ENDPOINTS.users.replace(':id', id), {
-                headers: {
-                    Authorization: this.key,
-                    'Content-Type': 'application/json'
-                }
+            let url = Constants.BASE_URL + Constants.ENDPOINTS.users.replace(':id', id);
+
+            resolve(request('GET', url, {
+                headers: {Authorization: this.key}
             }));
         });
     }
@@ -108,11 +108,60 @@ class Tsuiga {
         return new Promise((resolve, reject) => {
             if (typeof id !== 'string') return reject(new TypeError('id is not a string.'));
 
-            resolve(request('GET', Constants.BASE_URL + Constants.ENDPOINTS.bots.single.replace(':id', id), {
-                headers: {
-                    Authorization: this.key,
-                    'Content-Type': 'application/json'
-                }
+            let url = Constants.BASE_URL + Constants.ENDPOINTS.bots.single.replace(':id', id);
+
+            resolve(request('GET', url, {
+                headers: {Authorization: this.key}
+            }));
+        });
+    }
+
+    /**
+     * Gets the votes for a particular bot.
+     * 
+     * @param {String} id ID of the bot to get votes for.
+     * @param {Options} [options={}] Options for the votes to be received.
+     * @param {Boolean} [options.onlyIDs=false] Whether to return an array of user IDs instead of user objects.
+     * @param {Number} [options.days] Limits votes to ones done within the last N days. Min 0, max 31.
+     * @returns {Promise<Object>} Votes for the bot.
+     */
+    getBotVotes(id, options={}) {
+        return new Promise((resolve, reject) => {
+            if (typeof id !== 'string') return reject(new TypeError('id is not a string.'));
+            if (options.hasOwnProperty('onlyIDs') && typeof options.onlyIDs !== 'boolean') return reject(new TypeError('options.onlyIDs is not a boolean.'));
+            if (options.hasOwnProperty('days')) {
+                if (isNaN(options.days)) return reject(new TypeError('options.days is not a number.'));
+                if (!(0 <= options.days <= 31)) return reject(new Error(`options.days must be within the range of 0 to 31, inclusive. Got ${options.days}`));
+            }
+
+            let url = Constants.BASE_URL + Constants.ENDPOINTS.bots.votes.replace(':id', id);
+            let qs = {};
+
+            if (options.hasOwnProperty('onlyIDs')) qs.onlyids = options.onlyIDs;
+            if (options.hasOwnProperty('days')) qs.days = options.days;
+
+            qs = '?' + querystring.stringify(qs);
+
+            resolve(request('GET', url + qs, {
+                headers: {Authorization: this.key}
+            }));
+        });
+    }
+
+    /**
+     * Gets the server and shard stats for a particular bot.
+     * 
+     * @param {String} id ID of the bot to get stats for.
+     * @returns {Promise<Object>} Stats for the bot.
+     */
+    getBotStats(id) {
+        return new Promise((resolve, reject) => {
+            if (typeof id !== 'string') return reject(new TypeError('id is not a string.'));
+
+            let url = Constants.BASE_URL + Constants.ENDPOINTS.bots.stats.replace(':id', id);
+
+            resolve(request('GET', url, {
+                headers: {Authorization: this.key}
             }));
         });
     }
