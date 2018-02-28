@@ -8,6 +8,7 @@ const https = require('https');
 const URL = require('url');
 const querystring = require('querystring');
 const Constants = require('./Constants');
+const {Bot, User} = require('./Models');
 
 function request(method, url, options, payload) {
     return new Promise((resolve, reject) => {
@@ -100,7 +101,7 @@ class Tsuiga {
             resolve(request('GET', url, {
                 headers: {Authorization: this.key}
             }));
-        });
+        }).then(res => new User(res));
     }
 
     /**
@@ -118,7 +119,7 @@ class Tsuiga {
             resolve(request('GET', url, {
                 headers: {Authorization: this.key}
             }));
-        });
+        }).then(res => new Bot(res));
     }
 
     /**
@@ -206,7 +207,13 @@ class Tsuiga {
             resolve(request('GET', url + qs, {
                 headers: {Authorization: this.key}
             }));
-        }).then(res => res.results);
+        }).then(res => {
+            if (!res.results.filter(v => Object.keys(v).length).length) throw new Error('No results.');
+            else return {
+                total: res.total,
+                bots: res.results.map(v => new Bot(v))
+            };
+        });
     }
 }
 
