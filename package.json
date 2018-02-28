@@ -7,7 +7,7 @@
   "description": "A lightweight Node.JS wrapper for discordbots.org",
   "main": "index.js",
   "repository": "https://github.com/sr229/Tsuiga",
-  "author": "sr229",
+  "author": "claritymoe",
   "keywords": ["discord", "bot", "list", "lightweight"],
   "contributors": ["sr229 <enra@headbow.stream>", "Ovyerus <iamovyerus@gmail.com> (https://ovyerus.me)"],
   "license": "BSD-3-Clause"

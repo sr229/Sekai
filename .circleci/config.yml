@@ -1,0 +1,17 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: node:7.4.0
+    working_directory: src
+    steps:
+      - checkout
+      - run:
+          name: Install checker
+          command: npm i -g eslint 
+      - run:
+          name: Run Unit Test
+          command: npm run test
+      - run:
+          name: Run ESLint
+          command: eslint ./src

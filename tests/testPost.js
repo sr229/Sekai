@@ -13,7 +13,8 @@ const handler = new Tsuiga(config.token || process.env.DBL_TOKEN, config.clientI
 // send a test payload
 
 try {
-    handler.postStats(3,1);
+    console.log('Testing bot POST.');
+    handler.postStats(26,1);
 } catch (e) {
     return new Error(`Error occured during POST test: ${e}`);
 }

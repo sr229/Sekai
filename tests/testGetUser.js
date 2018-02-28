@@ -13,6 +13,7 @@ const handler = new Tsuiga(config.token || process.env.DBL_TOKEN, config.clientI
 // send a test payload
 
 try {
+    console.log('Testing user GET.');
     handler.getUser('184632227894657025').then(res => console.log(res));
 } catch(e) {
     return new Error(`An Error occured during GET: ${e}`);
