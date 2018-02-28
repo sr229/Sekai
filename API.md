@@ -18,6 +18,8 @@ Class for interfacing with the [Discordbots.org](https://discordbots.org) API.
 
 ### Tsuiga#postStats()
 
+Post stats to the API.
+
 | Property | Type | Description |
 | ------- | ------- | ------ |
 | guildCount | Number | Amount of guilds the client is on. |
@@ -27,6 +29,8 @@ Returns: `Promise`.
 
 ### Tsuiga#getUser()
 
+Gets a specific user using the API.
+
 | Property | Type | Description |
 | ------- | ------- | ------ |
 | id | String | The ID of the target user. |
@@ -34,6 +38,8 @@ Returns: `Promise`.
 Returns: `Promise<User>` The information of the user.
 
 ### Tsuiga#getBot()
+
+Gets a listed bot in the API.
 
 | Property | Type | Description |
 | ------- | ------- | ------ |
