@@ -2,7 +2,7 @@
   "name": "tsuiga",
   "version": "1.0.1",
   "scripts": {
-    "test": "node tests/*.js"
+    "test": "node tests/test.js"
   },
   "description": "A lightweight Node.JS wrapper for discordbots.org",
   "main": "index.js",
