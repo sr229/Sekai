@@ -3,3 +3,7 @@
 tests/
 .git
 API.md
+.npmignore
+circle.yml
+API.md
+.eslintrc.json
