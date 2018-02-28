@@ -41,7 +41,7 @@ class Tsuiga {
     /**
      * Creates a new Tsuiga instance.
      * 
-     * @param {String} key discordbots.org authorisation key.
+     * @param {String} key discordbots.org authorization key.
      * @param {String} [clientID] Client ID of the bot to send stats for.
      */
     constructor(key, clientID) {
