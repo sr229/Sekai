@@ -2,12 +2,12 @@
   "name": "tsuiga",
   "version": "1.0.0-rc1",
   "scripts": {
-    "test": "node tests/*"
-  }
+    "test": "node tests/*.js"
+  },
   "description": "A lightweight Node.JS wrapper for discordbots.org",
   "main": "index.js",
   "repository": "https://github.com/sr229/Tsuiga",
-  "author": "sr229"
+  "author": "sr229",
   "contributors": ["sr229 <enra@headbow.stream>", "Ovyerus <iamovyerus@gmail.com> (https://ovyerus.me)"],
   "license": "BSD-3-Clause"
 }
