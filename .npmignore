@@ -1,0 +1,4 @@
+# files ignored by NPM during publish
+
+tests/
+.git
