@@ -26,4 +26,6 @@ handler.getUser('USER_ID');
 
 ## Documentation
 
-Coming soon to a local Tonkku near you.
+Documentation for the API can be found [here](API.md) 
+
+
