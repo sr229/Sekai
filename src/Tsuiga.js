@@ -18,11 +18,16 @@ function request(method, url, options, payload) {
             res.on('data', chunk => chunked += chunk);
             res.on('error', reject);
             res.on('end', () => {
+                let val;
+
                 try {
-                    resolve(JSON.parse(chunked));
+                    val = JSON.parse(chunked);
                 } catch(e) {
-                    resolve(chunked);
+                    return resolve(chunked);
                 }
+
+                if (val.error) return reject(new Error(val.error));
+                else return resolve(val);
             });
         });
 
@@ -41,7 +46,7 @@ class Tsuiga {
     /**
      * Creates a new Tsuiga instance.
      * 
-     * @param {String} key discordbots.org authorization key.
+     * @param {String} key Authorisation key for the bot.
      * @param {String} [clientID] Client ID of the bot to send stats for.
      */
     constructor(key, clientID) {
