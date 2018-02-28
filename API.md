@@ -44,6 +44,8 @@ Returns: `Promise<User>` The information of the bot.
 
 ### Tsuiga#getBotVotes()
 
+Gets the votes for a particular bot.
+
 | Property | Type | Description |
 | ------- | ------- | ------ |
 | id | String | The ID of the target bot. |
@@ -51,8 +53,27 @@ Returns: `Promise<User>` The information of the bot.
 | options.onlyIDs | Boolean | Whether to return an array of user IDs instead of user objects. |
 |options.days | Number | Limits votes to ones were tallied within N days, valid range is whithin 0-30 days. |
 
-Returns: `Promise<User>` The information of the bot.
+Returns: `Promise<Object>` The votes for the bot.
 
+### Tsuiga#getBotStats()
+
+Gets the guild count and the shard stats for a particular bot.
+
+| Property | Type | Description |
+| ------- | ------- | ------ |
+| id | String | The ID of the target bot. |
+
+Returns: `Promise<Object>` The stats of the bot.
+
+### Tsuiga#searchBots()
+
+Searches for bots matching a specific criteria.
+
+| Property | Type | Description |
+| ------- | ------- | ------ |
+| options | Object | Options to search with. |
+
+Returns : `Promise<Bots[]>` List of the bots matching search criteria.
 
 
 
