@@ -1,5 +1,5 @@
 # Tsuiga
-
+[![CircleCI](https://circleci.com/gh/sr229/Tsuiga.svg?style=svg)](https://circleci.com/gh/sr229/Tsuiga)  
 Tsuiga is a complete alternative library for the official [dblapi.js Library](https://github.com/DiscordBotList/dblapi.js).
 
 Differences to the official library:
@@ -8,8 +8,12 @@ Differences to the official library:
  - Type checking.
  - camelCase for data returned from the API, instead of snake_case.
 
-## Example usage
+## Installing
+```
+npm install tsuiga
+```
 
+## Example usage
 ### Sending stats
 
 ```js
@@ -31,5 +35,4 @@ handler.getUser('USER_ID').then(console.log);
 ```
 
 ## Documentation
-
 Documentation for the API can be found [here](API.md) 

@@ -17,3 +17,4 @@ TSUIGA_CLIENT_ID
 ```
 
 Afterwards, run `node test.js`.
+Do note that the test will send stats to the API, setting `server_count` for the bot you're authing as, to `26` and `shard_count` to `1`.
