@@ -1,6 +1,7 @@
 /**
  * @file Tsuiga main class.
- * @copyright 2018 Ayana "Capuccino" Satomi
+ * @author Ayana "Capuccino" Satomi
+ * @author Ovyerus
  * @license BSD-3-Clause
  */
 
@@ -10,10 +11,13 @@ const querystring = require('querystring');
 const Constants = require('./Constants');
 const {Bot, User} = require('./Models');
 
-function request(method, url, options, payload) {
+// Simple function for creating a promisified HTTP request, with auto-resolved body return.
+function request(method, url, options={}, payload) {
     return new Promise((resolve, reject) => {
         let req = https.request(Object.assign(URL.parse(url), options, {method}), res => {
             let chunked = '';
+
+            if (res.statusCode !== 200) return reject(new Error(`HTTP ${res.statusCode}: ${res.statusMessage}`));
 
             res.setEncoding('utf8');
             res.on('data', chunk => chunked += chunk);
