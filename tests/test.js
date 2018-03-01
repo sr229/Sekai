@@ -29,7 +29,7 @@ console.log('Make sure that these look alright.\n\n');
     console.log('\n\n');
 
     console.log('Testing `Tsuiga#getBot`');
-    let bot = await handler.getBot('245520198109495296');
+    let bot = await handler.getBot(config.clientID);
     assert(bot instanceof Tsuiga.Bot);
     console.log(bot);
     console.log('\n\n');
@@ -40,7 +40,7 @@ console.log('Make sure that these look alright.\n\n');
     console.log('\n\n');
 
     console.log('Testing `Tsuiga#getBotStats`');
-    let stats = await handler.getBotStats('245520198109495296');
+    let stats = await handler.getBotStats(config.clientID);
     console.log(stats);
     console.log('\n\n');
 
