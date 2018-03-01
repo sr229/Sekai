@@ -48,6 +48,11 @@ console.log('Make sure that these look alright.\n\n');
     let bots = await handler.searchBots({limit: 5, offset: 10});
     console.log(bots);
     console.log('\n\n');
+
+    console.log('Testing `Tsuiga#postStats` with `guildCount = 26` and `shardCount = 1`');
+    let o = await handler.postStats(26, 1);
+    console.log(o);
+    console.log('\n\n');
 })().then(() => {
     console.log('All tests completed.');
     process.exit(0);
