@@ -33,7 +33,7 @@ console.log('Make sure that these look alright.\n\n');
     
     console.log('Testing Tsuiga#postStats');
     let o = await handler.postStats(26, 1);
-    assert(o instanceof Promise);
+    assert(o instanceof Object);
     console.log(o);
     console.log('\n\n');
     
