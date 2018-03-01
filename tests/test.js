@@ -12,7 +12,7 @@ let config;
 
 if (fs.existsSync(`${__dirname}/config.json`)) config = require(`${__dirname}/config.json`);
 else config = {
-    token: process.env.TSUIGA.TSUIGA_DBL_TOKEN,
+    token: process.env.TSUIGA_DBL_TOKEN,
     clientID: process.env.TSUIGA_CLIENT_ID
 };
 
