@@ -25,7 +25,7 @@ Post stats to the API.
 | guildCount | Number | Amount of guilds the client is on. |
 | shardCount | Number | Amount of shards the client has (default 0). |
 
-Returns: `Promise`.
+Returns: `Object`.
 
 ### Tsuiga#getUser()
 
