@@ -13,7 +13,7 @@ let config;
 if (fs.existsSync(`${__dirname}/config.json`)) config = require(`${__dirname}/config.json`);
 else config = {};
 
-const handler = new Tsuiga(config.token || process.env.TSUIGA_DBL_TOKEN, config.clientID || process.env.TSUIGA_CLIENT_ID);
+const handler = new Tsuiga(config.token || process.env.DBL_TOKEN, config.clientID || process.env.DISCORD_APP_SNOWFLAKE);
 
 console.log('Starting tests for Tsuiga');
 console.log('Make sure that these look alright.\n\n');
