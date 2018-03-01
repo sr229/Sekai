@@ -182,7 +182,7 @@ class Tsuiga {
         return new Promise((resolve, reject) => {
             if (options.hasOwnProperty('limit')) {
                 if (isNaN(options.limit)) return reject(new TypeError('options.limit is not a number.'));
-                if (0 < options.limit <= 500) return reject(new Error(`options.limit must not be less than 0 or larger than 500. Got: ${options.limit}`));
+                if (!(0 < options.limit <= 500)) return reject(new Error(`options.limit must be more than 0 or smaller than 500. Got: ${options.limit}`));
             }
 
             if (options.hasOwnProperty('offset')) {
