@@ -30,6 +30,13 @@ console.log('Make sure that these look alright.\n\n');
     assert(bot instanceof Tsuiga.Bot);
     console.log(bot);
     console.log('\n\n');
+    
+    console.log('Testing Tsuiga#postStats');
+    let o = await handler.postStats(26, 1);
+    assert(o instanceof Promise);
+    console.log(o);
+    console.log('\n\n');
+    
 })().then(() => {
     console.log('All tests completed.');
     process.exit(0);
