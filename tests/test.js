@@ -34,8 +34,8 @@ console.log('Make sure that these look alright.\n\n');
     console.log(bot);
     console.log('\n\n');
 
-    console.log('Testing `Tsuiga#getBotVotes` with `options.onlyIDs=true` and `options.days=10`');
-    let votes = await handler.getBotVotes('245520198109495296', {onlyIDs: true, days: 10});
+    console.log('Testing `Tsuiga#getBotVotes` with `options.days=10`');
+    let votes = await handler.getBotVotes(config.clientID, {days: 10});
     console.log(votes);
     console.log('\n\n');
 

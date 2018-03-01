@@ -89,7 +89,7 @@ class Bot {
      * @readonly
      */
     get defaultAvatarURL() {
-        return `https://cdn.discordapp.com/assets/${this.defaultAvatar}.png`;
+        return `https://discordapp.com/assets/${this.defaultAvatar}.png`;
     }
 
     /**
@@ -213,7 +213,7 @@ class User {
      * @readonly
      */
     get defaultAvatarURL() {
-        return `https://cdn.discordapp.com/assets/${this.defaultAvatar}.png`;        
+        return `https://discordapp.com/assets/${this.defaultAvatar}.png`;        
     }
 
     /**
@@ -290,4 +290,82 @@ class User {
     }
 }
 
-module.exports = {User, Bot};
+/**
+ * Represents a simple user received from vote information from DBL.
+ * 
+ * @prop {String} avatar The hash of the user's avatar. May be the default blurple avatar.
+ * @prop {String} discriminator The current discriminator of the user.
+ * @prop {String} id The snowflake ID of the user.
+ * @prop {String} username The current username of the user.
+ */
+class SimpleUser {
+    constructor(data) {
+        this.id = data.id;
+        this.username = data.username;
+        this.discriminator = data.discriminator;
+        this.avatar = data.avatar || '6debd47ed13483642cf09e832ed0bc1b'; // Fallback to default blurple avatar.
+        this._isDefaultAvatar = data.avatar ? false : true;
+    }
+
+    /**
+     * The user's "tag", in the format of "username#discriminator".
+     * 
+     * @type {String}
+     * @readonly
+     */
+    get tag() {
+        return `${this.username}#${this.discriminator}`;
+    }
+
+    /**
+     * The full CDN URL for the user's avatar.
+     * 
+     * @type {String}
+     * @readonly
+     */
+    get avatarURL() {
+        return this._isDefaultAvatar ? `https://discordapp.com/assets/${this.avatar}.png` : `https://cdn.discordapp.com/avatars/${this.id}/${this.avatar}.${this.avatar.startsWith('a_') ? 'gif' : 'png'}?size=512`;
+    }
+
+    /**
+     * Generates a URL for the user's avatar, with a custom format and size.
+     * 
+     * @param {String} [format] The image format for the avatar ('png', 'jpg', 'gif', 'webp').
+     * @param {Number} [size] The size for the avatar (128, 256, 512, 1024, 2048).
+     * @returns {String} The avatar URL. May be the default avatar if the user does not have a custom avatar.
+     */
+    dynamicAvatarURL(format='png', size=512) {
+        // Set to defaults in case `null` is given as an argument.
+        if (!format) format = 'png';
+        if (!size) size = 512;
+
+        if (this._isDefaultAvatar) return this.avatarURL;
+
+        if (typeof format !== 'string') throw new TypeError('format is not a string.');
+        if (!['png', 'jpeg', 'jpg', 'gif', 'webp'].includes(format.toLowerCase())) throw new Error(`format must either be "png", "jpg", "gif", or "webp". Got ${format}`);
+
+        if (isNaN(size)) throw new TypeError('size is not a number.');
+        if (![128, 256, 512, 1024, 2048].includes(size)) throw new Error(`size must either be 128, 256, 512, 1024, or 2048. Got ${size}`);
+
+        return `https://cdn.discordapp.com/avatar/${this.id}/${this.avatar}.${this.avatar.startsWith('a_') ? 'gif' : format}?size=${size}`;
+    }
+}
+
+/**
+ * An object containing information from a search of DBL.
+ * 
+ * @typedef {Object} SearchResults
+ * @prop {Number} total The total number of matches for the search, without the limit or offset taken into account.
+ * @prop {Bot[]} bots An array of the bots that matched the search.
+ */
+
+/**
+ * An object containing various Discord-related stats of a bot on DBL. 
+ * 
+ * @typedef {Object} BotStats
+ * @prop {?Number} serverCount The number of servers the bot says it's on.
+ * @prop {Number[]} shards The number of servers the bot says it's on, per shard. May be empty.
+ * @prop {?Number} shardCount The number of shards the bot has.
+ */
+
+module.exports = {User, Bot, SimpleUser};

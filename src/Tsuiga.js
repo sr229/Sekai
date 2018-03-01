@@ -9,7 +9,7 @@ const https = require('https');
 const URL = require('url');
 const querystring = require('querystring');
 const Constants = require('./Constants');
-const {Bot, User} = require('./Models');
+const {Bot, User, SimpleUser} = require('./Models');
 
 // Simple function for creating a promisified HTTP request, with auto-resolved body return.
 function request(method, url, options={}, payload) {
@@ -133,7 +133,7 @@ class Tsuiga {
      * @param {Options} [options={}] Options for the votes to be received.
      * @param {Boolean} [options.onlyIDs=false] Whether to return an array of user IDs instead of user objects.
      * @param {Number} [options.days] Limits votes to ones done within the last N days. Min 0, max 31.
-     * @returns {Promise<Object>} Votes for the bot.
+     * @returns {Promise<(String[]|SimpleUser[])>} Votes for the bot.
      */
     getBotVotes(id, options={}) {
         return new Promise((resolve, reject) => {
@@ -147,6 +147,7 @@ class Tsuiga {
             let url = Constants.BASE_URL + Constants.ENDPOINTS.bots.votes.replace(':id', id);
             let qs = {};
 
+            // Add properties to the querystring object if they exist.
             if (options.hasOwnProperty('onlyIDs')) qs.onlyids = options.onlyIDs;
             if (options.hasOwnProperty('days')) qs.days = options.days;
 
@@ -155,14 +156,14 @@ class Tsuiga {
             resolve(request('GET', url + qs, {
                 headers: {Authorization: this.key}
             }));
-        });
+        }).then(res => options.onlyIDs ? res : res.map(v => new SimpleUser(v)));
     }
 
     /**
      * Gets the server and shard stats for a particular bot.
      * 
      * @param {String} id ID of the bot to get stats for.
-     * @returns {Promise<Object>} Stats for the bot.
+     * @returns {Promise<BotStats>} Stats for the bot.
      */
     getBotStats(id) {
         return new Promise((resolve, reject) => {
@@ -173,14 +174,19 @@ class Tsuiga {
             resolve(request('GET', url, {
                 headers: {Authorization: this.key}
             }));
-        });
+        }).then(res => ({
+            // Convert snake_case properties to camelCase to fit in JS better.
+            serverCount: res.server_count,
+            shards: res.shards,
+            shardCount: res.shard_count
+        }));
     }
 
     /**
      * Searches DBL for bots matching various criteria.
      * 
      * @param {Object} [options] Options to search with.
-     * @returns {Promise<Bots[]>} List of bots that matched the search criteria.
+     * @returns {Promise<SearchResults>} List of bots that matched the search criteria.
      */
     searchBots(options={}) {
         return new Promise((resolve, reject) => {
@@ -197,9 +203,10 @@ class Tsuiga {
             if (options.hasOwnProperty('sort') && typeof options.sort !== 'string') return reject(new TypeError('options.sort is not a string.'));
             if (options.hasOwnProperty('fields') && !Array.isArray(options.fields)) return reject(new TypeError('options.fields is not an array.'));
 
-            let url = Constants.BASE_URL + Constants.ENDPOINTS.bots.base;
+            let url = Constants.BASE_URL + Constants.ENDPOINTS.bots.search;
             let qs = {};
 
+            // Only add properties to the querystring object if they exist.
             if (options.hasOwnProperty('limit')) qs.limit = Number(options.limit);
             if (options.hasOwnProperty('offset')) qs.offset = Number(options.offset);
             if (options.hasOwnProperty('sort')) qs.sort = options.sort;
@@ -214,6 +221,7 @@ class Tsuiga {
         }).then(res => {
             if (!res.results.filter(v => Object.keys(v).length).length) throw new Error('No results.');
             else return {
+                // A simple object that only really has information the user needs.
                 total: res.total,
                 bots: res.results.map(v => new Bot(v))
             };
