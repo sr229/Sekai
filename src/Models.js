@@ -355,8 +355,8 @@ class SimpleUser {
  * An object containing information from a search of DBL.
  * 
  * @typedef {Object} SearchResults
- * @prop {Number} total The total number of matches for the search, without the limit or offset taken into account.
  * @prop {Bot[]} bots An array of the bots that matched the search.
+ * @prop {Number} total The total number of matches for the search, without the limit or offset taken into account.
  */
 
 /**
@@ -364,8 +364,8 @@ class SimpleUser {
  * 
  * @typedef {Object} BotStats
  * @prop {?Number} serverCount The number of servers the bot says it's on.
- * @prop {Number[]} shards The number of servers the bot says it's on, per shard. May be empty.
  * @prop {?Number} shardCount The number of shards the bot has.
+ * @prop {Number[]} shards The number of servers the bot says it's on, per shard. May be empty.
  */
 
 module.exports = {User, Bot, SimpleUser};

@@ -46,6 +46,7 @@ function request(method, url, options={}, payload) {
  * Class for interfacing with the discordbots.org API.
  * 
  * @prop {String} key Key to use for authenticating with the API.
+ * @prop {String?} clientID Client ID of the bot to send stats for. If not present, you won't be able to run Tsuiga#postStats.
  */
 class Tsuiga {
     /**
@@ -186,7 +187,12 @@ class Tsuiga {
      * Searches DBL for bots matching various criteria.
      * 
      * @param {Object} [options] Options to search with.
-     * @returns {Promise<SearchResults>} List of bots that matched the search criteria.
+     * @param {Number} [options.limit] Upper limit for number of results received from the search. Must be between 0 and 500.
+     * @param {Number} [options.offset] How many bots to offset the search by. Effectively acts as a paginator.
+     * @param {String} [options.sort] Field to sort by.
+     * @param {String[]} [options.fields] Fields to limit search results to.
+     * @param {Object} [options.search] An object mapping fields to values to search by.
+     * @returns {Promise<SearchResults>} Object containing information about the search.
      */
     searchBots(options={}) {
         return new Promise((resolve, reject) => {
