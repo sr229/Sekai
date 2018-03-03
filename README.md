@@ -35,4 +35,4 @@ handler.getUser('USER_ID').then(console.log);
 ```
 
 ## Documentation
-Documentation for the API can be found [here](API.md) 
+Documentation for the API can be found [here](https://github.com/sr229/Tsuiga/wiki).
