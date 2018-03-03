@@ -1,6 +1,6 @@
 {
   "name": "tsuiga",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "scripts": {
     "test": "node tests/test.js"
   },
@@ -8,7 +8,16 @@
   "main": "index.js",
   "repository": "https://github.com/sr229/Tsuiga",
   "author": "claritymoe",
-  "keywords": ["discord", "bot", "list", "lightweight"],
-  "contributors": ["sr229 <enra@headbow.stream>", "Ovyerus <iamovyerus@gmail.com> (https://ovyerus.me)"],
+  "keywords": [
+    "discord",
+    "bot",
+    "list",
+    "lightweight",
+    "dbl"
+  ],
+  "contributors": [
+    "sr229 <enra@headbow.stream>",
+    "Ovyerus <iamovyerus@gmail.com> (https://ovyerus.me)"
+  ],
   "license": "BSD-3-Clause"
 }
