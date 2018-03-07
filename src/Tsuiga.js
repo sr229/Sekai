@@ -1,6 +1,6 @@
 /**
  * @file Tsuiga main class.
- * @author Ayana "Capuccino" Satomi
+ * @author Ayane "Capuccino" Satomi
  * @author Ovyerus
  * @license BSD-3-Clause
  */
