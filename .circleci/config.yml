@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: node:8.14.0
+      - image: node:8.14.1
     working_directory: src
     steps:
       - checkout
